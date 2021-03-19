@@ -15,4 +15,6 @@ public interface UserMapper {
     void insertUser(User user);
 
     User findUserByToken(String token);
+
+    User findUserById(Integer id);
 }

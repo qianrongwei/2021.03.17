@@ -50,17 +50,16 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);
         GitHubUser gitHubUser = gitHubProvider.getUser(accessToken);
-        System.out.println(gitHubUser);
-        if(gitHubUser != null){
+        if(gitHubUser != null && gitHubUser.getId() != null){
             User user = new User();
             user.setAccountId(String.valueOf(gitHubUser.getId()));
             user.setName(gitHubUser.getName());
             user.setBio(gitHubUser.getBio());
+            user.setAvatarUrl(gitHubUser.getAvatarUrl());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            System.out.println(user);
             userMapper.insertUser(user);
             Cookie cookie = new Cookie("token",token);
             cookie.setMaxAge(60*60*24);
