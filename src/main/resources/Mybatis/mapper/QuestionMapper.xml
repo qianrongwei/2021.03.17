@@ -23,7 +23,12 @@
         values(#{title},#{description},#{tag},#{creator},#{gmtCreate},#{gmtModified});
     </insert>
 
-    <select id="list" resultMap="questionMap" >
-        select * from question;
+    <select id="list" resultMap="questionMap" parameterType="Integer" >
+        select * from question limit #{offset},2;
     </select>
+
+    <select id="getCount" resultType="Integer">
+        select count(1) from question;
+    </select>
+
 </mapper>

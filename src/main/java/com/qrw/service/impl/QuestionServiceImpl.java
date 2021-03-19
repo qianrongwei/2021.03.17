@@ -1,5 +1,6 @@
 package com.qrw.service.impl;
 
+import com.qrw.dto.PaginationDTO;
 import com.qrw.dto.QuestionDTO;
 import com.qrw.mapper.QuestionMapper;
 import com.qrw.mapper.UserMapper;
@@ -25,17 +26,28 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<QuestionDTO> list(){
-        List<Question> questions = questionMapper.list();
+    public PaginationDTO list(Integer page,Integer size){
+
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.getCount();
+        paginationDTO.setPagination(totalCount,page,size);
+        if(page < 1 ){
+            page = 1;
+        }
+        if(page > paginationDTO.getTotalPage()){
+            page = paginationDTO.getTotalPage();
+        }
+        Integer offset = size * (page - 1);
+        List<Question> questions = questionMapper.list(offset);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question:questions) {
             User user = userMapper.findUserById(question.getCreator());
-            System.out.println(user);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        return questionDTOS;
+        paginationDTO.setQuestions(questionDTOS);
+        return paginationDTO;
     }
 }
