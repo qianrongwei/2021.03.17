@@ -2,6 +2,8 @@ package com.qrw.service;
 
 import com.qrw.dto.PaginationDTO;
 import com.qrw.dto.QuestionDTO;
+import com.qrw.pojo.Question;
+
 import java.util.List;
 
 /**
@@ -10,5 +12,8 @@ import java.util.List;
  */
 public interface QuestionService {
 
-    public PaginationDTO list(Integer page, Integer size);
+     PaginationDTO list(Integer page, Integer size);
+
+     PaginationDTO listByUserId(Integer userId,Integer page,Integer size);
+
 }

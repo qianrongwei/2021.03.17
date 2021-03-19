@@ -6,18 +6,32 @@ package com.qrw.mapper;
  */
 
 import com.qrw.pojo.Question;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
 @Repository
+@Mapper
 public interface QuestionMapper {
 
+    @Insert(" insert into question(title,description,tag,creator,gmt_create,gmt_modified)" +
+            " values(#{title},#{description},#{tag},#{creator},#{gmtCreate},#{gmtModified});")
     void insertQuestion(Question question);
 
-    List<Question> list(Integer offset);
+    @Select("select * from question limit #{offset},#{size}")
+    List<Question> list(@Param("offset") Integer offset, @Param("size") Integer size);
 
+    @Select("select count(1) from question")
     Integer getCount();
+
+    @Select("select * from question where creator = #{creator} limit #{offset},#{size}")
+    List<Question> listByUserId(@Param("creator") Integer userId,@Param("offset") Integer offset,@Param("size") Integer size);
+
+    @Select("select count(1) from question where creator = #{userId}")
+    Integer getCountByUserID(@Param("userId") Integer userId);
+
 }

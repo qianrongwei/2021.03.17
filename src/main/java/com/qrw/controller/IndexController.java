@@ -1,5 +1,6 @@
 package com.qrw.controller;
 
+
 import com.qrw.dto.PaginationDTO;
 import com.qrw.dto.QuestionDTO;
 import com.qrw.mapper.QuestionMapper;
@@ -35,11 +36,13 @@ public class IndexController {
 
     @GetMapping(value = {"/"})
     public String hello(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                        @RequestParam(value = "size",defaultValue = "2") Integer size,
+                        @RequestParam(value = "size",defaultValue = "5") Integer size,
                         HttpServletRequest request, Model model){
+
 
         PaginationDTO paginationDTO = questionService.list(page, size);
         model.addAttribute("paginationDTO",paginationDTO);
+
 
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {
