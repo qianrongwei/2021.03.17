@@ -90,4 +90,15 @@ public class QuestionServiceImpl implements QuestionService {
         return paginationDTO;
     }
 
+    @Override
+    public QuestionDTO getById(Integer id) {
+
+        QuestionDTO questionDTO = new QuestionDTO();
+        Question question = questionMapper.getById(id);
+        BeanUtils.copyProperties(question,questionDTO);
+        User user = userMapper.findUserById(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
+
 }

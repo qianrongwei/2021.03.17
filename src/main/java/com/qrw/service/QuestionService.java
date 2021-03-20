@@ -1,6 +1,7 @@
 package com.qrw.service;
 
 import com.qrw.dto.PaginationDTO;
+import com.qrw.dto.QuestionDTO;
 
 /**
  * @author qrw
@@ -12,4 +13,5 @@ public interface QuestionService {
 
      PaginationDTO listByUserId(Integer userId,Integer page,Integer size);
 
+    QuestionDTO getById(Integer id);
 }
