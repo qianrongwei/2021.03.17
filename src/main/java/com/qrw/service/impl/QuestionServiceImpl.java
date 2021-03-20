@@ -2,6 +2,9 @@ package com.qrw.service.impl;
 
 import com.qrw.dto.PaginationDTO;
 import com.qrw.dto.QuestionDTO;
+import com.qrw.exception.CustomizeErrorCode;
+import com.qrw.exception.CustomizeException;
+import com.qrw.mapper.QuestionExtMapper;
 import com.qrw.mapper.QuestionMapper;
 import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.Question;
@@ -25,8 +28,8 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
-
-
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page,Integer size){
 
@@ -93,8 +96,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDTO getById(Integer id) {
 
-        QuestionDTO questionDTO = new QuestionDTO();
         Question question = questionMapper.getById(id);
+        if(question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         User user = userMapper.findUserById(question.getCreator());
         questionDTO.setUser(user);
@@ -110,8 +116,21 @@ public class QuestionServiceImpl implements QuestionService {
         }else{
             //更新
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            int result = questionMapper.update(question);
+            if(result != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
+    }
+
+    public void incView(Integer id){
+        /*
+        一般会这么去做，先查询question原来的viewCount，在加一，有并发风险
+         */
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 
 }
