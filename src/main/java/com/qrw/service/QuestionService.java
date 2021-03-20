@@ -1,10 +1,6 @@
 package com.qrw.service;
 
 import com.qrw.dto.PaginationDTO;
-import com.qrw.dto.QuestionDTO;
-import com.qrw.pojo.Question;
-
-import java.util.List;
 
 /**
  * @author qrw

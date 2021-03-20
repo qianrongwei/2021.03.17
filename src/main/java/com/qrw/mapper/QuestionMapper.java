@@ -1,10 +1,5 @@
 package com.qrw.mapper;
 
-/**
- * @author qrw
- * @create 2021-03-19 8:54
- */
-
 import com.qrw.pojo.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author qrw
+ * @create 2021-03-19 8:54
+ */
 @Repository
 @Mapper
 public interface QuestionMapper {

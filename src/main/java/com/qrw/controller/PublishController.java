@@ -4,7 +4,6 @@ import com.qrw.mapper.QuestionMapper;
 import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.Question;
 import com.qrw.pojo.User;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,22 +39,8 @@ public class PublishController {
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
 
-        Cookie[] cookies = request.getCookies();
-        User user = null;
-        if(cookies != null) {
-            for (Cookie c : cookies) {
-                if ("token".equals(c.getName())) {
-                    String token = c.getValue();
-                    user = userMapper.findUserByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+        User user = (User) request.getSession().getAttribute("user");
         if(user == null){
-            System.out.println("====54");
             model.addAttribute("error","请登录后在发布问题");
             return "publish";
         }

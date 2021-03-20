@@ -6,8 +6,6 @@ import com.qrw.dto.GitHubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
-
 /**
  * @author qrw
  * @create 2021-03-18 0:01
