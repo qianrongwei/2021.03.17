@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionExtMapper {
 
-     void incView(Question question);
+     int incView(Question question);
+     int incComment(Question question);
 }

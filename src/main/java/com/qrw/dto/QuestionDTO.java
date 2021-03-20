@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionDTO {
-    private Integer id;
+    private Long id;
     private String title;
     private String description;
     private String tag;
     private Integer creator;
     private Long gmtCreate;
     private Long gmtModified;
-    private Integer commentCount;
-    private Integer viewCount;
-    private Integer likeCount;
+    private Long commentCount;
+    private Long viewCount;
+    private Long likeCount;
     private User user;
 }

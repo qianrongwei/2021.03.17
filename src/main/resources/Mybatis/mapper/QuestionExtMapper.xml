@@ -10,4 +10,10 @@
         set view_count =  view_count + #{viewCount}
         where id = #{id};
     </update>
+
+    <update id="incComment" parameterType="question">
+        update question
+        set comment_count = comment_count + #{commentCount}
+        where id = #{id};
+    </update>
 </mapper>

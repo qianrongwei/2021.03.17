@@ -35,7 +35,7 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(@RequestParam("title") String title, @RequestParam("description") String description,
-                            @RequestParam("tag") String tag, @RequestParam(value = "id",required = false) Integer id,
+                            @RequestParam("tag") String tag, @RequestParam(value = "id",required = false) Long id,
                             Model model, HttpServletRequest request){
 
         model.addAttribute("title",title);
@@ -71,7 +71,7 @@ public class PublishController {
     }
 
     @GetMapping(value = "/publish/{id}")
-    public String edit(@PathVariable("id") Integer id,Model model){
+    public String edit(@PathVariable("id") Long id,Model model){
 
         QuestionDTO question = questionService.getById(id);
         model.addAttribute("title",question.getTitle());

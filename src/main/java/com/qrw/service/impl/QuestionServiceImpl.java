@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalLong;
 
 /**
  * @author qrw
@@ -62,7 +63,7 @@ public class QuestionServiceImpl implements QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO listByUserId(Integer userId,Integer page,Integer size){
+    public PaginationDTO listByUserId(Long userId,Integer page,Integer size){
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = questionMapper.getCountByUserID(userId);
         Integer totalPage;
@@ -94,7 +95,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
 
         Question question = questionMapper.getById(id);
         if(question == null){
@@ -112,6 +113,9 @@ public class QuestionServiceImpl implements QuestionService {
             //插入
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0L);
+            question.setCommentCount(0L);
+            question.setLikeCount(0L);
             questionMapper.insertQuestion(question);
         }else{
             //更新
@@ -123,13 +127,13 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    public void incView(Integer id){
+    public void incView(Long id){
         /*
         一般会这么去做，先查询question原来的viewCount，在加一，有并发风险
          */
         Question question = new Question();
         question.setId(id);
-        question.setViewCount(1);
+        question.setViewCount(1L);
         questionExtMapper.incView(question);
     }
 
