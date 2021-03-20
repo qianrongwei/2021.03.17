@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
             dbuser.setToken(user.getToken());
             dbuser.setName(user.getName());
             dbuser.setAvatarUrl(user.getAvatarUrl());
-            dbuser.setGmtModified(user.getGmtModified());
+            dbuser.setGmtModified(System.currentTimeMillis());
             userMapper.update(dbuser);
         }
     }

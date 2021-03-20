@@ -101,4 +101,17 @@ public class QuestionServiceImpl implements QuestionService {
         return questionDTO;
     }
 
+    public void createOrUpdate(Question question) {
+        if(question.getId() == null ){
+            //插入
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.insertQuestion(question);
+        }else{
+            //更新
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
+
 }
