@@ -11,3 +11,5 @@
 [BootStrap](https://v3.bootcss.com/getting-started/)
 
 ## 进度
+2021.3.20     
+完成问题详情查看功能，修复登录功能（避免同一个GitHUb账户反复插入用户表）
