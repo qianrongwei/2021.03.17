@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qrw.mapper.NotificationMapper">
+
+    <resultMap id="basicNotificationMap" type="com.qrw.pojo.Notification">
+        <id column="id" property="id"></id>
+        <result column="notifier" property="notifier"></result>
+        <result column="receiver" property="receiver"></result>
+        <result column="outer_id" property="outerId"></result>
+        <result column="type" property="type"></result>
+        <result column="status" property="status"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="notifier_name" property="notifierName"></result>
+        <result column="outer_title" property="outerTitle"></result>
+    </resultMap>
+
+    <insert id="insert" parameterType="notification">
+        insert into notification(notifier,receiver,outer_id,type,status,gmt_create,notifier_name,outer_title)
+        values(#{notifier},#{receiver},#{outerId},#{type},#{status},#{gmtCreate},#{notifierName},#{outerTitle});
+    </insert>
+
+    <select id="getCountByUserId" parameterType="Long" resultType="Integer">
+        select count(1) from notification where receiver = #{id};
+    </select>
+
+
+</mapper>

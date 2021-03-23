@@ -1,6 +1,7 @@
 package com.qrw.service;
 
 import com.qrw.pojo.User;
+import org.springframework.stereotype.Service;
 
 /**
  * @author qrw

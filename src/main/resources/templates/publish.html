@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/community.css">
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/community.js"></script>
 
 </head>
 <body >
@@ -23,15 +24,44 @@
                 <input type="hidden" name="id" th:value="${id}"/>
                 <div class="form-group">
                     <label for="title">问题标题:</label>
-                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题...."/>
+                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" autocomplete="off" placeholder="问题标题...."/>
                 </div>
                 <div class="form-group">
                     <label for="desciption">问题补充（请参照右边提示）</label>
-                    <textarea name="description" id="desciption" th:text="${description}" class="form-control" cols="30" rows="10" ></textarea>
+                    <textarea name="description" id="desciption" th:text="${description}"autocomplete="off" class="form-control" cols="30" rows="10" ></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
-                    <input type="text" name="tag" id="tag" th:value="${tag}" class="form-control"  placeholder="输入标签，以,隔开"/>
+                    <input type="text" name="tag" id="tag" th:value="${tag}" class="form-control"
+                           autocomplete="off" onclick="showSelectTag()"  placeholder="输入标签，以,隔开"/>
+                   <!-- <div>
+                        <span class="label label-info"><span class="glyphicon glyphicon-tags" onclick="selectTag('SpringBoot')">SpringBoot</span></span>
+                        <span class="label label-info"><span class="glyphicon glyphicon-tags"onclick="selectTag('Java')">Java</span></span>
+                    </div>-->
+
+                    <div class="public-tag-tab" id="select-tag">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" th:each="selectCategory,selectCategoryStat : ${tags}"
+                                th:class="${selectCategoryStat.first ? 'active' : ''}">
+                                <a th:href="'#'+${selectCategory.categoryName}" aria-controls="home" role="tab"
+                                   data-toggle="tab" th:text="${selectCategory.categoryName}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" th:id="${selectCategory.categoryName}"
+                                th:each="selectCategory : ${tags}"
+                                 th:class="${selectCategoryStat.first ? 'tab-pane active' : 'tab-pane' }">
+                                <span>
+                                    <span class="label label-info" th:each="selectTag : ${selectCategory.tags}">
+                                        <span class="glyphicon glyphicon-tags" onclick="selectTag(this)" th:data-tag="${selectTag}"
+                                                th:text="'  '+${selectTag}">
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <span class="alert alert-danger" role="alert" th:text="${error}" th:if="${error != null}"></span>
                 <button type="submit" class="btn btn-success btn-publish">发布</button>

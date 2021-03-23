@@ -2,7 +2,6 @@ package com.qrw.controller;
 
 import com.qrw.dto.AccessTokenDTO;
 import com.qrw.dto.GitHubUser;
-import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.User;
 import com.qrw.provider.GitHubProvider;
 import com.qrw.service.UserService;
@@ -39,7 +38,7 @@ public class AuthorizeController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state,
-                           HttpServletRequest request, HttpServletResponse response){
+                           HttpServletResponse response){
 
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
@@ -59,10 +58,9 @@ public class AuthorizeController {
 
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-
             userService.createOrUpdate(user);
             Cookie cookie = new Cookie("token",token);
-            cookie.setMaxAge(60*60*24);
+            cookie.setMaxAge(60*60*24*7);
             response.addCookie(cookie);
             return "redirect:/";
         }

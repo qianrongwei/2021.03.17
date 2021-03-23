@@ -1,6 +1,11 @@
 package com.qrw.service;
 
+import com.qrw.dto.CommentDTO;
+import com.qrw.enums.CommentTypeEnum;
 import com.qrw.pojo.Comment;
+import com.qrw.pojo.User;
+
+import java.util.List;
 
 /**
  * @author qrw
@@ -8,5 +13,7 @@ import com.qrw.pojo.Comment;
  */
 public interface CommentService {
 
-    void insert(Comment comment);
+    void insert(Comment comment, User user);
+
+    List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type);
 }

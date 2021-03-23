@@ -14,6 +14,7 @@
         <result column="gmt_create" property="gmtCreate"></result>
         <result column="gmt_modified" property="gmtModified"></result>
         <result column="like_count" property="likeCount"></result>
+        <result column="comment_count" property="commentCount"></result>
     </resultMap>
 
     <insert id="insert" parameterType="comment">
@@ -21,7 +22,17 @@
         values(#{parentId},#{type},#{comment},#{commentator},#{gmtCreate},#{gmtModified});
     </insert>
 
-    <select id="getCommentById" parameterType="Integer" resultMap="commentMap">
+    <select id="getCommentById" parameterType="Long" resultMap="commentMap">
         select * from comment where id = #{id};
     </select>
+
+    <select id="getCommentsByExample" parameterType="comment" resultMap="commentMap">
+        select * from comment where parent_id = #{parentId} and type = #{type} order by gmt_create desc ;
+    </select>
+
+    <update id="incCommentCount" parameterType="comment">
+        update comment
+        set comment_count = comment_count + #{commentCount}
+        where id = #{id};
+    </update>
 </mapper>

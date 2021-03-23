@@ -1,7 +1,9 @@
 package com.qrw.controller;
 
 import com.qrw.dto.PaginationDTO;
+import com.qrw.pojo.Notification;
 import com.qrw.pojo.User;
+import com.qrw.service.NotificationService;
 import com.qrw.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name="action") String action,
                           @RequestParam(value = "page",defaultValue = "1") Integer page,
@@ -38,8 +43,10 @@ public class ProfileController {
             model.addAttribute("paginationDTO",paginationDTO);
         }else{
             if("replies".equals(action)){
+                PaginationDTO paginationDTO = notificationService.list(user.getId(),page,size);
                 model.addAttribute("section","replies");
                 model.addAttribute("sectionName","最新答复");
+                model.addAttribute("paginationDTO",paginationDTO);
             }
         }
         return "profile";

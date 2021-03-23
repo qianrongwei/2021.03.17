@@ -5,6 +5,19 @@
 
 <mapper namespace="com.qrw.mapper.QuestionExtMapper">
 
+    <resultMap id="basicQuestionMap" type="question">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="tag" property="tag"></result>
+        <result column="creator" property="creator"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+        <result column="comment_count" property="commentCount"></result>
+        <result column="like_count" property="likeCount"></result>
+        <result column="view_count" property="viewCount"></result>
+    </resultMap>
+
     <update id="incView" parameterType="question">
         update question
         set view_count =  view_count + #{viewCount}
@@ -16,4 +29,10 @@
         set comment_count = comment_count + #{commentCount}
         where id = #{id};
     </update>
+
+    <select id="selectRelated" parameterType="question" resultMap="basicQuestionMap">
+        select * from question
+        where id != #{id} and tag regexp #{tag}
+    </select>
+
 </mapper>

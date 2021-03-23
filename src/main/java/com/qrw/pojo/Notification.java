@@ -1,0 +1,27 @@
+package com.qrw.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @author qrw
+ * @create 2021-03-22 15:41
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Notification {
+
+    private Long id;
+    private Long notifier;
+    private String notifierName;
+    private Long receiver;
+    private Long outerId;
+    private Integer type;
+    private Integer status;
+    private Long gmtCreate;
+    private String outerTitle;
+
+}

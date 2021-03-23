@@ -1,9 +1,12 @@
 package com.qrw.interceptor;
 
+import com.qrw.mapper.NotificationMapper;
 import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.User;
+import com.qrw.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +23,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -32,6 +37,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     User user = userMapper.findUserByToken(token);
                     if (user != null) {
                         request.getSession().setAttribute("user", user);
+                        Long unreadCount = notificationService.unreadCount(user.getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

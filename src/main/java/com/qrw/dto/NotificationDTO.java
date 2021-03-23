@@ -7,20 +7,21 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author qrw
- * @create 2021-03-21 12:27
+ * @create 2021-03-22 17:11
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDTO {
+public class NotificationDTO {
+
     private Long id;
-    private Long parentId;
+    private Long notifier;
+    private String notifierName;
+    private Long  outerId;
     private Integer type;
-    private String comment;
-    private Long commentator;
+    private Integer status;
     private Long gmtCreate;
-    private Long gmtModified;
-    private Long likeCount;
-    private Long commentCount;
-    private User user;
+    private String outerTitle;
+    private String typeName;
+
 }

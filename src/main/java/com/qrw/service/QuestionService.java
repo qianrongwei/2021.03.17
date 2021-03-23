@@ -4,6 +4,8 @@ import com.qrw.dto.PaginationDTO;
 import com.qrw.dto.QuestionDTO;
 import com.qrw.pojo.Question;
 
+import java.util.List;
+
 /**
  * @author qrw
  * @create 2021-03-19 10:33
@@ -19,4 +21,6 @@ public interface QuestionService {
      void createOrUpdate(Question question);
 
      void incView(Long id);
+
+    List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
 }

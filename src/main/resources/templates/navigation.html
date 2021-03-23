@@ -26,11 +26,10 @@
                     <ul class="nav navbar-nav navbar-right">
 
                         <li th:if="${ not #strings.isEmpty(session.user)}">
-                            <a href="/publish">发布</a>
+                            <a href="/publish">提问</a>
                         </li>
-
-                        <li th:if="${#strings.isEmpty(session.user)}">
-                            <a href="https://github.com/login/oauth/authorize?client_id=c9804c645a2454bbad9e&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
+                        <li th:if="${ not #strings.isEmpty(session.user)}">
+                            <a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount} > 0 ? ${session.unreadCount} : '' "></span></a>
                         </li>
                         <li class="dropdown" th:if="${not #strings.isEmpty(session.user)}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -41,6 +40,10 @@
                                 <li><a th:href="@{/profile/questions}">我的问题</a></li>
                                 <li><a th:href="@{/logout}">退出登录</a></li>
                             </ul>
+                        </li>
+
+                        <li th:if="${#strings.isEmpty(session.user)}">
+                            <a href="https://github.com/login/oauth/authorize?client_id=c9804c645a2454bbad9e&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->

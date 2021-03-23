@@ -44,6 +44,7 @@ public class CustomizeExceptionHandler {
             } catch (Exception ioe) {
 
             }
+            return null;
         } else {
             //错误页面跳转
             if (e instanceof CustomizeException) {
@@ -51,9 +52,8 @@ public class CustomizeExceptionHandler {
             } else {
                 model.addAttribute("message", CustomizeErrorCode.SYS_ERROR);
             }
-
+            return new ModelAndView("/error");
         }
-        return new ModelAndView("/error");
     }
 
 }

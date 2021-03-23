@@ -10,13 +10,16 @@ import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.Question;
 import com.qrw.pojo.User;
 import com.qrw.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalLong;
+import java.util.stream.Collectors;
 
 /**
  * @author qrw
@@ -34,13 +37,16 @@ public class QuestionServiceImpl implements QuestionService {
 
     public PaginationDTO list(Integer page,Integer size){
 
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = questionMapper.getCount();
         Integer totalPage;
         if(totalCount % size == 0){
             totalPage = totalCount / size;
         }else{
             totalPage = totalCount / size + 1;
+        }
+        if(totalPage == 0){
+            totalPage = 1;
         }
         if(page < 1 ){
             page = 1;
@@ -59,12 +65,12 @@ public class QuestionServiceImpl implements QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOS);
+        paginationDTO.setData(questionDTOS);
         return paginationDTO;
     }
 
     public PaginationDTO listByUserId(Long userId,Integer page,Integer size){
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = questionMapper.getCountByUserID(userId);
         Integer totalPage;
         if(totalCount % size == 0){
@@ -73,7 +79,7 @@ public class QuestionServiceImpl implements QuestionService {
             totalPage = totalCount / size + 1;
         }
         if(page < 1 ){
-            page = 1;/**/
+            page = 1;
         }
         if(page > totalPage){
             page = totalPage;
@@ -90,7 +96,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOS);
+        paginationDTO.setData(questionDTOS);
         return paginationDTO;
     }
 
@@ -135,6 +141,26 @@ public class QuestionServiceImpl implements QuestionService {
         question.setId(id);
         question.setViewCount(1L);
         questionExtMapper.incView(question);
+    }
+
+    @Override
+    public List<QuestionDTO> selectRelated(QuestionDTO queryQuestionDTO) {
+        if(StringUtils.isBlank(queryQuestionDTO.getTag())){
+            return new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryQuestionDTO.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryQuestionDTO.getId());
+        question.setTag(regexpTag);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 
 }

@@ -1,8 +1,11 @@
 package com.qrw.mapper;
 
 import com.qrw.pojo.Comment;
+import com.qrw.pojo.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author qrw
@@ -14,5 +17,9 @@ public interface CommentMapper {
 
     void insert(Comment comment);
 
-    Comment getComentById(Long id);
+    Comment getCommentById(Long id);
+
+    List<Comment> getCommentsByExample(Comment comment);
+
+    int incCommentCount(Comment comment);
 }

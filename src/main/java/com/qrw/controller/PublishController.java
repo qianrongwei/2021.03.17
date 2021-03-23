@@ -1,11 +1,13 @@
 package com.qrw.controller;
 
+import com.qrw.cache.TagCache;
 import com.qrw.dto.QuestionDTO;
 import com.qrw.mapper.QuestionMapper;
 import com.qrw.mapper.UserMapper;
 import com.qrw.pojo.Question;
 import com.qrw.pojo.User;
 import com.qrw.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +31,8 @@ public class PublishController {
     private QuestionService questionService;
 
     @GetMapping("/publish")
-    public String toPublishPage(){
+    public String toPublishPage(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -41,6 +44,7 @@ public class PublishController {
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
+        model.addAttribute("tags", TagCache.get());
 
         User user = (User) request.getSession().getAttribute("user");
         if(user == null){
@@ -58,6 +62,11 @@ public class PublishController {
         }
         if(tag == null || "".equals(tag.trim())){
             model.addAttribute("error","标签不能为空");
+            return "publish";
+        }
+        String invalid = TagCache.filterInvalid(tag);
+        if(StringUtils.isNotBlank(invalid)){
+            model.addAttribute("error","输入非法标签:"+invalid);
             return "publish";
         }
         Question question = new Question();
@@ -78,6 +87,7 @@ public class PublishController {
         model.addAttribute("description",question.getDescription());
         model.addAttribute("tag",question.getTag());
         model.addAttribute("id",id);
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
