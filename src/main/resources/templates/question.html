@@ -6,10 +6,15 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/moment.js"></script>
     <script type="text/javascript" src="/js/community.js"></script>
+    <script type="text/javascript" src="/js/editormd.min.js"></script>
+    <script type="text/javascript" src="/js/lib/marked.min.js"></script>
+    <script type="text/javascript" src="/js/lib/prettify.min.js"></script>
 
 </head>
 <body >
@@ -31,7 +36,14 @@
                 </span>
                 <!-- 正文  -->
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+                    <textarea style="display:none;" th:text="${questionDTO.description}" ></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var testView = editormd.markdownToHTML("question-view", {});
+                    });
+                </script>
 
                 <!--标签-->
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -97,11 +109,11 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-circle" th:src="@{${questionDTO.user.avatarUrl}}" alt="头像">
+                                <img class="media-object img-circle" th:src="@{${session.user != null ? session.user.avatarUrl : '/images/default-avatar.png'}}" alt="头像">
                             </a>
                         </div>
                         <div class="media-body">
-                            <h6 class="media-heading" th:text="${questionDTO.user.name}"></h6>
+                            <h6 class="media-heading" th:text="${session.user != null ? session.user.name : '匿名用户' }"></h6>
                         </div>
                     </div>
                     <input type="hidden" th:value="${questionDTO.id}" id="question_id">
@@ -130,7 +142,7 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>这是站长头像</h4>
-                <img class="img-thumbnail question-profile-img" src="/img/profile.jpg" />
+                <img class="img-thumbnail question-profile-img" src="/images/profile.jpg" />
             </div>
 
             <!--相关问题-->

@@ -5,6 +5,7 @@ import com.qrw.dto.GitHubUser;
 import com.qrw.pojo.User;
 import com.qrw.provider.GitHubProvider;
 import com.qrw.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.util.UUID;
  * @create 2021-03-17 23:58
  */
 @Controller
+@Slf4j//日志记录
 public class AuthorizeController {
 
     @Autowired
@@ -63,8 +65,11 @@ public class AuthorizeController {
             cookie.setMaxAge(60*60*24*7);
             response.addCookie(cookie);
             return "redirect:/";
+        }else {
+            log.error("callback get github error,{}",gitHubUser);
+            //登录失败
+            return "redirect:/";
         }
-        return "redirect:/";
     }
 
     @GetMapping("/logout")
